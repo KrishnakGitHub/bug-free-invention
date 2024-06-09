@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Slider with Particle Breaking Effect</title>
+    <link rel="stylesheet" href="styles.css">
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.home {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-image: url(../images/437A7107.JPG);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    will-change: transform, opacity;
+    animation: break 1s ease-out forwards;
+}
+
+@keyframes break {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+<body>
+    <div class="home">
+        <div class="particles"></div>
+    </div>
+    <script src="script.js"></script>
+<script>
+const images = [
+    'url(../images/_JRP4803.JPG)',
+    'url(../images/_JRP4830.JPG)',
+    'url(../images/_JRP4832.JPG)',
+];
+
+let currentIndex = 0;
+const homeElement = document.querySelector('.home');
+const particlesContainer = document.querySelector('.particles');
+
+function createParticles() {
+    const particleCount = 50; // Number of particles
+    particlesContainer.innerHTML = ''; // Clear existing particles
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.width = `${Math.random() * 20 + 10}px`;
+        particle.style.height = `${Math.random() * 20 + 10}px`;
+        particle.style.backgroundImage = images[currentIndex];
+        particle.style.top = `${Math.random() * 100}vh`;
+        particle.style.left = `${Math.random() * 100}vw`;
+        particle.style.setProperty('--tx', `${Math.random() * 200 - 100}px`);
+        particle.style.setProperty('--ty', `${Math.random() * 200 - 100}px`);
+        particlesContainer.appendChild(particle);
+    }
+}
+
+function changeBackgroundImage() {
+    createParticles();
+    currentIndex = (currentIndex + 1) % images.length;
+    setTimeout(() => {
+        homeElement.style.backgroundImage = images[currentIndex];
+    }, 1000); // Match this to the animation duration
+}
+
+setInterval(changeBackgroundImage, 5000); // Change image every 5 seconds
+</script>
+</body>
+</html>
